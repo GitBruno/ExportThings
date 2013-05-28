@@ -33,18 +33,25 @@ tell application "Things"
 	repeat with thisProject in allProjects
 		set tdName to the name of thisProject
 		set tdDueDate to the due date of thisProject
-		
+		set tdNotes to the notes of thisProject
 		set tagList to tags of thisProject
 		set tagNames to tag names of thisProject
 		
 		repeat with thisTag in tagList
 			set tagName to the name of thisTag
 			if tagName is exportTag then
+				write "------------------------------- " & linefeed to theFile
 				write "+ " & tdName & linefeed to theFile
+				write "------------------------------- " & linefeed to theFile
 				if tdDueDate is not missing value then
-					write "> Due: " & date string of tdDueDate & linefeed to theFile
+					write "  Due: " & date string of tdDueDate & linefeed to theFile
 				end if
-				
+				if tdNotes is not "" then
+					# Append a "tab" to each line of tdNotes.
+					repeat with noteParagraph in paragraphs of tdNotes
+						write "  Status: " & noteParagraph & linefeed to theFile
+					end repeat
+				end if
 				set prToDos to to dos of project tdName
 				repeat with prToDo in prToDos
 					set prtdName to the name of prToDo
@@ -52,12 +59,12 @@ tell application "Things"
 					
 					write tab & "- " & prtdName & linefeed to theFile
 					if prtdDueDate is not missing value then
-						write tab & "> Due: " & date string of prtdDueDate & linefeed to theFile
+						write tab & "  Due: " & date string of prtdDueDate & linefeed to theFile
 					end if
 				end repeat
+				write linefeed to theFile
 			end if
 		end repeat
-		
 	end repeat
 	
 	close access theFile
