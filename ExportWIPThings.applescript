@@ -2,7 +2,11 @@
 # Based on the script of Dexter Ang (Thanks!)
 
 set exportTag to "kids"
-set theFilePath to (path to desktop as Unicode text) & "ThingsWIP.txt"
+
+set theFileName to "JobList_Projects.txt"
+#set theFilePath to (path to desktop as Unicode text) & theFileName
+set theFilePath to (path to home folder as Unicode text) & "WIP:_Admin:JobListGen:" & theFileName
+
 set theFile to (open for access file theFilePath with write permission)
 set eof of theFile to 0
 set pCount to 0
@@ -40,27 +44,32 @@ tell application "Things"
 		repeat with thisTag in tagList
 			set tagName to the name of thisTag
 			if tagName is exportTag then
-				write "------------------------------- " & linefeed to theFile
-				write "+ " & tdName & linefeed to theFile
-				write "------------------------------- " & linefeed to theFile
-				if tdDueDate is not missing value then
-					write "  Due: " & date string of tdDueDate & linefeed to theFile
-				end if
+				write "Project: " & tdName & linefeed to theFile
 				if tdNotes is not "" then
-					# Append a "tab" to each line of tdNotes.
 					repeat with noteParagraph in paragraphs of tdNotes
-						write "  Status: " & noteParagraph & linefeed to theFile
+						write "Status: " & noteParagraph & linefeed to theFile
 					end repeat
+				end if
+				if tdDueDate is not missing value then
+					write "Due: " & date string of tdDueDate & linefeed to theFile
 				end if
 				set prToDos to to dos of project tdName
 				repeat with prToDo in prToDos
 					set prtdName to the name of prToDo
 					set prtdDueDate to the due date of prToDo
+					set prtdNotes to the notes of prToDo
 					
-					write tab & "- " & prtdName & linefeed to theFile
+					write tab & "- Todo: " & prtdName & linefeed to theFile
 					if prtdDueDate is not missing value then
-						write tab & "  Due: " & date string of prtdDueDate & linefeed to theFile
+						write tab & "  Due: " & tab & date string of prtdDueDate & linefeed to theFile
 					end if
+					
+					if prtdNotes is not "" then
+						repeat with prnoteParagraph in paragraphs of prtdNotes
+							write tab & "  Status: " & prnoteParagraph & linefeed to theFile
+						end repeat
+					end if
+					
 				end repeat
 				write linefeed to theFile
 			end if
