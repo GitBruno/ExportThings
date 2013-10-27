@@ -1,3 +1,10 @@
+ClearLogbook.applescript
+===========================
+
+An applescript that clears the logbook by deleting all containing entries.
+
+
+
 ExportWIPThings.applescript
 ===========================
 
@@ -13,11 +20,6 @@ Based on "ExportThings.applescript" by Dexter Ang<br />
 
 1. Select export location
 2. Search for multiple tags
-
-#### Copyright & License
-ExportWIPThings.applescript is released under the MIT license:
-
-- http://www.opensource.org/licenses/MIT
 
 
 ExportThings.applescript
